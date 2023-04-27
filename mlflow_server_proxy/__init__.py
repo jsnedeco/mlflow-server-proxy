@@ -33,25 +33,32 @@ def setup_mlflow():
         executable = shutil.which('mlflow')
         if not executable:
             raise FileNotFoundError('Can not find mlflow executable')
+        mlflow_dir = os.environ.get('MLFLOW_STORE')
 
-        mlflow_dir = os.environ.get('MLFLOW_STORE') or '/tmp'
-        mlflow_db_dir = '{0}/mlflow/db'.format(mlflow_dir)
+        if mlflow_dir:
+            mlflow_db_dir = '{0}/mlflow/db'.format(mlflow_dir)
 
-        if not os.path.exists(mlflow_db_dir):
-            try:
-                os.makedirs(mlflow_db_dir)
-                logger.info("Created mlflow db directory {0}".format(mlflow_db_dir))
-            except Exception as e:
-                logger.error(e)
-                raise e
+            if not os.path.exists(mlflow_db_dir):
+                try:
+                    os.makedirs(mlflow_db_dir)
+                    logger.info("Created mlflow db directory {0}".format(mlflow_db_dir))
+                except Exception as e:
+                    logger.error(e)
+                    raise e
+            else:
+                logger.info("Directory {0} already exists".format(mlflow_db_dir))
+
+
+
+            # mlflow config
+            host = '127.0.0.1'
+            backend_store_uri = mlflow_db_dir
+            default_artifact_root = mlflow_db_dir
+            workers = '1'
         else:
-            logger.info("Directory {0} already exists".format(mlflow_db_dir))
-
-        # mlflow config
-        host = '127.0.0.1'
-        backend_store_uri = mlflow_db_dir
-        default_artifact_root = mlflow_db_dir
-        workers = '1'
+            host = '127.0.0.1'
+            backend_store_uri = os.environ('MLFLOW_BACKEND_URI')
+            default_artifact_root = os.environ("MLFLOW_ARTIFACT_ROOT")
 
         return ['mlflow', 'server', '--host', host, '--port', str(port),
                 '--backend-store-uri', backend_store_uri,
