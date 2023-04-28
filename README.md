@@ -24,7 +24,7 @@ The above command will install MLFlow as well.
 
 ##  🤹‍Setup 
 
-The environment variable `MLFLOW_STORE` has to be set as backend storage for MLFlow to log models and artifacts. Default is `/tmp`
+The environment variable `MLFLOW_STORE` has to be set as backend storage for MLFlow to log models and artifacts locally. 
 
 This environment variable is then used in setting server uri while using MLFlow in your code as below:
 
@@ -34,6 +34,18 @@ import mlflow
 server_uri = os.environ["MLFLOW_STORE"]
 mlflow.set_tracking_uri(server_uri)
 ```
+
+If you wish to use a non-local backend (i.e., Postgres on a remote server) set the URI as follows: 
+
+```python
+import mlflow
+
+server_uri = os.environ["MLFLOW_BACKEND_URI"]
+mlflow.set_tracking_uri(server_uri)
+```
+
+
+
 ## Requirements
 
 #### Install MLFlow 

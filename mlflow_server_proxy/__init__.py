@@ -59,6 +59,7 @@ def setup_mlflow():
             host = '127.0.0.1'
             backend_store_uri = os.environ('MLFLOW_BACKEND_URI')
             default_artifact_root = os.environ("MLFLOW_ARTIFACT_ROOT")
+            workers = '1'
 
         return ['mlflow', 'server', '--host', host, '--port', str(port),
                 '--backend-store-uri', backend_store_uri,
