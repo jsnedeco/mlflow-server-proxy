@@ -17,6 +17,9 @@ Return config on servers to start for mlflow-server-proxy
 import os
 import shutil
 import logging
+from pathlib import Path
+import subprocess
+import shlex
 
 logger = logging.getLogger(__name__)
 logger.setLevel('INFO')
@@ -34,6 +37,17 @@ def setup_mlflow():
         if not executable:
             raise FileNotFoundError('Can not find mlflow executable')
         mlflow_dir = os.environ.get('MLFLOW_STORE')
+
+        bash_profile = Path(os.environ['HOME']) / Path(".bashrc")
+        if bash_profile.is_file():
+            logger.info("Loading bash environment variables")
+            command = shlex.split("env -i bash -c 'source ~/.bashrc && env'")
+            proc = subprocess.Popen(command, stdout=subprocess.PIPE)
+            for line in proc.stdout:
+                line = line.decode("utf-8")
+                (key, value) = line.split("=")
+                os.environ[key] = value
+            proc.communicate()
 
         if mlflow_dir:
             mlflow_db_dir = '{0}/mlflow/db'.format(mlflow_dir)
