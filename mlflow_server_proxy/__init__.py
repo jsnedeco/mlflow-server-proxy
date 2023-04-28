@@ -40,7 +40,7 @@ def setup_mlflow():
 
         bash_profile = Path(os.environ['HOME']) / Path(".bashrc")
         if bash_profile.is_file():
-            logger.info("Loading bash environment variables")
+            logger.error("Loading bash environment variables")
             command = shlex.split("env -i bash -c 'source ~/.bashrc && env'")
             proc = subprocess.Popen(command, stdout=subprocess.PIPE)
             for line in proc.stdout:
