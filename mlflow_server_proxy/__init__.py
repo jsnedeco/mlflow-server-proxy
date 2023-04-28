@@ -61,6 +61,14 @@ def setup_mlflow():
             default_artifact_root = os.environ.get("MLFLOW_ARTIFACT_ROOT")
             workers = '1'
 
+        cmd = ['mlflow', 'server', '--host', host, '--port', str(port),
+                '--backend-store-uri', backend_store_uri,
+                '--default-artifact-root', default_artifact_root,
+                '--workers', workers]
+
+        logger.error(" ".join(cmd))
+        logger.error(os.environ)
+
         return ['mlflow', 'server', '--host', host, '--port', str(port),
                 '--backend-store-uri', backend_store_uri,
                 '--default-artifact-root', default_artifact_root,

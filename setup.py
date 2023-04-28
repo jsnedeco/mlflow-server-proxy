@@ -30,7 +30,9 @@ setuptools.setup(
     keywords=['jupyter', 'mlflow', 'jupyterhub'],
     license='Apache 2.0 license',
     install_requires=[
-        'jupyter-server-proxy'
+        'jupyter-server-proxy',
+        'boto3',
+        'psycopg2'
     ],
     extras_require={
         "resources": ["mlflow"],
