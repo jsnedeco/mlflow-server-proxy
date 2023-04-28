@@ -38,7 +38,7 @@ def setup_mlflow():
             raise FileNotFoundError('Can not find mlflow executable')
         mlflow_dir = os.environ.get('MLFLOW_STORE')
 
-        bash_profile = Path(os.environ['HOME']) / Path("/capsule/code/config.sh")
+        bash_profile = Path(os.environ['HOME']) / Path(".bashrc")
         if bash_profile.is_file():
             logger.error("Loading bash environment variables")
             command = shlex.split("bash -c 'source ~/.bashrc && env'")
