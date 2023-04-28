@@ -44,7 +44,7 @@ def setup_mlflow():
             command = shlex.split("env -i bash -c 'source ~/.bashrc && env'")
             proc = subprocess.Popen(command, stdout=subprocess.PIPE)
             for line in proc.stdout:
-                line = line.decode("utf-8")
+                line = line.decode("utf-8").strip()
                 (key, value) = line.split("=")
                 os.environ[key] = value
             proc.communicate()
